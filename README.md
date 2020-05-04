@@ -14,3 +14,8 @@ Customize your KHS plugins to your hearts content with this tool, built in Vue/E
 
 ## Planned features
 * MacOS support
+
+## Development setup
+
+Clone the repository, run ```npm install```, and then run ```npm run dev``` for a live development server, or run ```npm run build``` to build. This project is build on the
+
