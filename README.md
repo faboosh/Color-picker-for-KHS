@@ -1,20 +1,9 @@
 # Color Picker for KHS
 > Color picker app for KiloHearts plugins, built in Vue/Electron.
 
-One to two paragraph statement about your product and what it does.
+Customize your KHS plugins to your hearts content with this tool!
 
-![](https://octodex.github.com/images/yaktocat.png)
-
-## Usage example
-
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
-
-## Development setup
-
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
-
-
-
+![](https://media.discordapp.net/attachments/703131675319861312/706807953017012294/unknown.png?width=1092&height=683)
 
 ## Features
 -Full color customization
