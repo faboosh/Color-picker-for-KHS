@@ -11,6 +11,7 @@ Customize your KHS plugins to your hearts content with this tool, built in Vue/E
 * Import KHS .conf files
 * Import/export presets as .zip files
 * Export preset directly to KHS folder
+* Live preview interface
 
 ## Planned features
 * MacOS support
