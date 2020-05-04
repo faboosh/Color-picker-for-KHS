@@ -1,4 +1,4 @@
-# ![](https://scontent-cph2-1.xx.fbcdn.net/v/t1.15752-9/95709334_239855193960308_6538740485823922176_n.png?_nc_cat=100&_nc_sid=b96e70&_nc_ohc=0uerDpQZCs4AX8U95w5&_nc_ht=scontent-cph2-1.xx&oh=9c7dbbef5b25225904a0b34f695e9eb2&oe=5ED67BDC)Color Picker for KHS
+# ![](https://scontent-cph2-1.xx.fbcdn.net/v/t1.15752-9/95579033_685569468678867_806729501118562304_n.png?_nc_cat=102&_nc_sid=b96e70&_nc_ohc=JVJL9ortdKIAX8ASdMD&_nc_ht=scontent-cph2-1.xx&oh=9e2af926857ad13dc000ea5a35d4ddd9&oe=5ED56A62)Color Picker for KHS
 
 Customize your KHS plugins to your hearts content with this tool, built in Vue/Electron!
 
