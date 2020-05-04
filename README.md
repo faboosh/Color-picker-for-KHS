@@ -17,5 +17,5 @@ Customize your KHS plugins to your hearts content with this tool, built in Vue/E
 
 ## Development setup
 
-Clone the repository, run ```npm install```, and then run ```npm run dev``` for a live development server, or run ```npm run build``` to build. This project is build on the
+Clone the repository, run ```npm install```, and then run ```npm run dev``` for a live development server, or run ```npm run build``` to build. This project is built using vuex-electron, see https://github.com/vue-electron/vuex-electron for more information.
 
