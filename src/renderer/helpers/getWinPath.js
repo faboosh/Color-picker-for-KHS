@@ -1,0 +1,1 @@
+export const getWinPath = () => { return "C:/ProgramData/Kilohearts" };
