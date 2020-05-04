@@ -57,6 +57,7 @@ import ImportZipFile from "./ImportZipFile";
 import Images from "./Images";
 import Message from "./Message";
 import ExportToZip from "./ExportToZip";
+import Slice from "./preview-assets/Slice";
 
 export default {
   data() {
@@ -79,7 +80,8 @@ export default {
     Images,
     Message,
     ExportToZip,
-    ImportZipFile
+    ImportZipFile,
+    Slice
   },
   methods: {}
 };

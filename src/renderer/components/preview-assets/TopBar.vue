@@ -2,7 +2,7 @@
   <div class="top-bar" :style="{backgroundColor: getColor('main_background')}">
     <div class="row" :style="{borderBottom: `3px solid ${getColor('control_background')}`}">
       <div class="col-3 logo py-1">
-        <h4 class="text-center" :style="{color: getColor('handle')}">ColorPicker</h4>
+        <h4 class="text-center" :style="{color: getColor('handle')}">{{title}}</h4>
         <small class="text-center" :style="{color: getColor('text')}">{{`v${"0.1.0"}`}}</small>
       </div>
       <div class="col-6" :style="{backgroundColor: getColor('control_background')}">
@@ -62,6 +62,7 @@ export default {
       version: process.env.npm_package_version
     };
   },
+  props: ["title"],
   methods: {
     ...mapGetters(["getColorByLabel", "getComputedColor"]),
     getColor: function(label) {

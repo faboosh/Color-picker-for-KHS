@@ -41,14 +41,13 @@
       </div>
     </div>
     <div
-      v-if="!showEQ"
       class="window-wrapper"
       :class="{hide: collapsed}"
       :style="{backgroundColor: getColor('panel_background')}"
     >
-      <TopBar></TopBar>
+      <TopBar :title="showEQ ? 'EQ' : 'ColorPicker'"></TopBar>
 
-      <div class="window-inner">
+      <div class="window-inner" v-if="!showEQ">
         <div
           class="background-image"
           :style="{backgroundImage: `url(${getPluginImage(target)})`, opacity: getImageAlpha(target)}"
@@ -57,6 +56,12 @@
 
         <div class="footer"></div>
       </div>
+
+      <div class="window-inner" v-if="showEQ">
+        <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}">
+          <Slice></Slice>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -64,6 +69,8 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import ActiveKnob from "./preview-assets/ActiveKnob";
+import Slice from "./preview-assets/Slice";
+
 import TopBar from "./preview-assets/TopBar";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -92,7 +99,7 @@ export default {
       return this.getComputedColor()(this.getColorByLabel()(label), true);
     }
   },
-  components: { ActiveKnob, TopBar }
+  components: { ActiveKnob, TopBar, Slice }
 };
 </script>
 
@@ -141,7 +148,7 @@ export default {
 
 .main {
   width: 100%;
-  height: 382px;
+  min-height: 382px;
   resize: vertical;
   overflow: auto;
 }
