@@ -2,7 +2,7 @@
 
 Customize your KHS plugins to your heart's content with this tool, built with Vue/Electron!
 
-![](https://scontent-cph2-1.xx.fbcdn.net/v/t1.15752-9/95491631_1290883171117868_5533485342742544384_n.png?_nc_cat=107&_nc_sid=b96e70&_nc_ohc=STg57A1r75QAX_M1TJs&_nc_ht=scontent-cph2-1.xx&oh=239fbcdc2187044f29788954b5f9d13c&oe=5ED4A265)
+![](https://media.discordapp.net/attachments/703145790159192084/707715463383089222/unknown.png?width=1090&height=682)
 
 ## Features
 * Full color customization
