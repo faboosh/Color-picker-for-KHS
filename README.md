@@ -7,7 +7,7 @@ Customize your KHS plugins to your heart's content with this tool, built with Vu
 ## Features
 * Full color customization
 * Global color controls (hue, saturation and tint)
-* Background images
+* Background images with scaling, cropping and positioning support
 * Import KHS .conf files
 * Import/export presets as .zip files
 * Export preset directly to KHS folder
