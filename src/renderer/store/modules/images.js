@@ -15,6 +15,11 @@ const mutations = {
             state.images[target] = image;
         }
     },
+    setRendered(state, { image, target }) {
+        if (typeof state.images[target] !== "undefined") {
+            state.images[target].rendered = image;
+        }
+    },
     setAlpha(state, { target, alpha }) {
         if (typeof state.images[target].setAlpha == "function") {
             state.images[target].setAlpha(alpha);
@@ -29,6 +34,9 @@ const actions = {
     setImage({ commit }, payload) {
         commit('setImage', payload)
     },
+    setRendered({ commit }, payload) {
+        commit('setRendered', payload)
+    },
     setAlpha({ commit }, payload) {
         commit('setAlpha', payload)
     },
@@ -41,7 +49,16 @@ const getters = {
     getImage: (state) => (name) => {
         const image = state.images[name];
         if (typeof image.getDataUrl == "function") {
+            console.log(image.getDataUrl());
             return image.getDataUrl();
+        } else {
+            return false;
+        }
+    },
+    getRenderedImage: (state) => (name) => {
+        const image = state.images[name];
+        if (typeof image.getRenderedDataUrl == "function") {
+            return image.getRenderedDataUrl();
         } else {
             return false;
         }

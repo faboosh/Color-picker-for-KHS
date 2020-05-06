@@ -6,7 +6,7 @@
         :class="{disabled: collapsed}"
         @click="collapsed = !collapsed"
       >Preview</h3>
-      <div>
+      <div v-if="!collapsed">
         <span class="text-white mx-2 mb-n2">Background</span>
         <div class="btn-group" role="group">
           <button
@@ -45,13 +45,10 @@
       :class="{hide: collapsed}"
       :style="{backgroundColor: getColor('panel_background')}"
     >
-      <TopBar :title="showEQ ? 'EQ' : 'ColorPicker'"></TopBar>
+      <TopBar :title="showEQ ? 'SnapEQ' : 'ColorPicker'"></TopBar>
 
       <div class="window-inner" v-if="!showEQ">
-        <div
-          class="background-image"
-          :style="{backgroundImage: `url(${getPluginImage(target)})`, opacity: getImageAlpha(target)}"
-        ></div>
+        <div class="background-image" :style="{backgroundImage: `url(${getPluginImage(target)})`}"></div>
         <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}"></div>
 
         <div class="footer"></div>
@@ -68,10 +65,12 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+
+//Components
 import ActiveKnob from "./preview-assets/ActiveKnob";
 import Slice from "./preview-assets/Slice";
-
 import TopBar from "./preview-assets/TopBar";
+
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 export default {
@@ -83,17 +82,9 @@ export default {
     };
   },
   methods: {
-    ...mapGetters([
-      "getColorByLabel",
-      "getComputedColor",
-      "getImage",
-      "getAlpha"
-    ]),
+    ...mapGetters(["getColorByLabel", "getComputedColor", "getRenderedImage"]),
     getPluginImage: function(name) {
-      return this.getImage()(name);
-    },
-    getImageAlpha: function(name) {
-      return this.getAlpha()(name);
+      return this.getRenderedImage()(name);
     },
     getColor: function(label) {
       return this.getComputedColor()(this.getColorByLabel()(label), true);

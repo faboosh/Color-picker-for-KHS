@@ -10,27 +10,28 @@
         <button
           class="btn btn-secondary"
           :class="{active: target == 'Phase_Plant'}"
-          @click="target = 'Phase_Plant'"
+          @click="setTarget('Phase_Plant')"
         >Phase Plant</button>
         <button
           class="btn btn-secondary"
           :class="{active: target == 'Multipass'}"
-          @click="target = 'Multipass'"
+          @click="setTarget('Multipass')"
         >Multipass</button>
         <button
           class="btn btn-secondary"
           :class="{active: target == 'Snap_Heap'}"
-          @click="target = 'Snap_Heap'"
+          @click="setTarget('Snap_Heap')"
         >SnapHeap</button>
       </div>
+
       <div class="image-wrapper">
-        <div v-if="getPluginImage(target)" class="preview-wrapper">
-          <div class="image-controls">
-            <AlphaSlider :selectedTarget="target" :alpha="getAlphaByName()"></AlphaSlider>
-            <button class="btn btn-danger mb-3" @click="removeImage">Remove image</button>
-          </div>
-          <img class="preview" :src="getPluginImage(target)" alt @click="importImage" />
-          <h5 class="text-white">Click anywhere to replace image</h5>
+        <div class="preview-wrapper" :class="{hide: !getPluginImage(target)}">
+          <CanvasRenderer
+            class="preview"
+            :target="target"
+            @change_image="importImage"
+            @remove_image="removeImage"
+          ></CanvasRenderer>
         </div>
         <div class="import-wrapper" v-if="!getPluginImage(target)">
           <h5>There doesn't appear to be an image loaded for {{target.replace("_", " ")}}</h5>
@@ -45,9 +46,11 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 import { KHSImage } from "../classes/image";
 import { Dialog } from "../classes/Dialog";
+import { EventBus } from "../helpers/eventbus";
 
 //Components
 import AlphaSlider from "./AlphaSlider";
+import CanvasRenderer from "./CanvasRenderer";
 
 export default {
   data() {
@@ -63,13 +66,20 @@ export default {
       return this.getImage()(name);
     },
     importImage: async function() {
+      //Open dialog and get path to image
       let dialog = new Dialog("openFile", [
         { name: "Image", extensions: ["jpg", "jpeg", "png"] }
       ]);
-      let image = new KHSImage(await dialog.open(), 0.5);
-      await image.loadImage();
-      if (image) {
-        this.setImage({ image, target: this.target });
+      let path = await dialog.open();
+
+      //If user specifies path, load image
+      if (path) {
+        let image = new KHSImage(path, 1);
+        await image.loadImage();
+        if (image) {
+          this.setImage({ image, target: this.target });
+          this.redrawCanvas();
+        }
       }
     },
     removeImage() {
@@ -77,12 +87,21 @@ export default {
     },
     getAlphaByName: function() {
       let alpha = this.getAlpha()(this.target) * 100;
-      console.log(alpha);
       return alpha;
+    },
+    redrawCanvas() {
+      setTimeout(() => {
+        EventBus.$emit("image_loaded");
+      }, 0);
+    },
+    setTarget(target) {
+      this.target = target;
+      this.redrawCanvas();
     }
   },
   components: {
-    AlphaSlider
+    AlphaSlider,
+    CanvasRenderer
   }
 };
 </script>
@@ -133,15 +152,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  .preview:hover + h5,
-  .btn:hover {
-    display: block;
-  }
-
-  .preview:hover {
-    opacity: 0.3;
   }
 }
 

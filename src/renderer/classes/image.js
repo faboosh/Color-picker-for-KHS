@@ -7,6 +7,7 @@ export class KHSImage {
         this.path = path || null;
         this.alpha = alpha || 0;
         this.image = image || {};
+        this.rendered = {};
     }
 
     async loadImage() {
@@ -20,6 +21,14 @@ export class KHSImage {
     getDataUrl() {
         if (this.image) {
             return this.image.urlBase + this.image.base64Image;
+        } else {
+            return "";
+        }
+    }
+
+    getRenderedDataUrl() {
+        if (this.rendered) {
+            return this.rendered.urlBase + this.rendered.base64Image;
         } else {
             return "";
         }
@@ -44,8 +53,8 @@ export class KHSImage {
 
     async getPngBase64(name) {
         return new Promise(async resolve => {
-            if (this.image.base64Image) {
-                let buffer = await convertToPng(this.image.base64Image);
+            if (this.rendered.base64Image) {
+                let buffer = await convertToPng(this.rendered.base64Image);
                 let base64Image = new Buffer(buffer, 'binary').toString('base64');
                 if (name) {
                     resolve({ base64Image, name })
