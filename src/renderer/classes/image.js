@@ -1,5 +1,4 @@
 import { readImage } from "../helpers/readImage";
-import { convertToPng } from "../helpers/convertToPng";
 const fs = require('fs');
 
 export class KHSImage {
@@ -43,7 +42,7 @@ export class KHSImage {
     }
 
     async writePngToPath(path, name) {
-        let buffer = await this.getPngBase64();
+        let buffer = this.rendered.base64Image;
         if (buffer) {
             fs.writeFile(`${path}/${name}.png`, buffer, 'base64', (err, res) => {
                 if (err) throw err;
@@ -51,7 +50,7 @@ export class KHSImage {
         }
     }
 
-    async getPngBase64(name) {
+    /*async getPngBase64(name) {
         return new Promise(async resolve => {
             if (this.rendered.base64Image) {
                 let buffer = await convertToPng(this.rendered.base64Image);
@@ -65,5 +64,5 @@ export class KHSImage {
                 resolve(false);
             }
         })
-    }
+    }*/
 }

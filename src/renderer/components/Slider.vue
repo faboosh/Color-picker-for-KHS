@@ -1,8 +1,8 @@
 <template>
   <div class="control mb-3">
     <div class="color">
-      <h6 class="mt-1 text-white">{{title}}</h6>
-      <div class="inner">
+      <h6 class="mt-1 text-white title" :class="{disabled: hide}" @click="hide = !hide">{{title}}</h6>
+      <div class="inner" :class="{hide: hide}">
         <input
           ref="slider"
           type="range"
@@ -26,10 +26,11 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
 export default {
-  props: ["title", "defaultVal", "min", "max", "value"],
+  props: ["title", "defaultVal", "min", "max", "value", "collapsed"],
   data() {
     return {
-      undo: fas.faUndo
+      undo: fas.faUndo,
+      hide: this.$props.collapsed
     };
   },
   mounted() {},
@@ -51,4 +52,18 @@ export default {
 
 <style scoped lang="scss">
 @import "../scss/slider.scss";
+
+.hide {
+  visibility: hidden;
+  height: 0;
+}
+
+.title {
+  user-select: none;
+  cursor: pointer;
+}
+
+.disabled {
+  color: #707070 !important;
+}
 </style>

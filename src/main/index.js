@@ -35,6 +35,8 @@ function createWindow() {
     mainWindow.setMenu(null);
   }
 
+  mainWindow.maximize();
+
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {
