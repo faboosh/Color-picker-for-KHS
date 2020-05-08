@@ -84,11 +84,11 @@ import Message from "./Message";
 import ExportToZip from "./ExportToZip";
 import Slice from "./preview-assets/Slice";
 
-const { BrowserWindow } = require("electron").remote;
+/*const { BrowserWindow } = require("electron").remote;
 // Retrieve focused window
 let mainWindow = BrowserWindow.getFocusedWindow();
 
-console.log(mainWindow);
+console.log(mainWindow);*/
 
 export default {
   data() {

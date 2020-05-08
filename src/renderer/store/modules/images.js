@@ -1,6 +1,3 @@
-import { unlinkObservers } from '../../helpers/unlinkObservers';
-import { KHSImage } from "../../classes/image";
-
 const state = {
     images: {
         Phase_Plant: {},
@@ -49,7 +46,6 @@ const getters = {
     getImage: (state) => (name) => {
         const image = state.images[name];
         if (typeof image.getDataUrl == "function") {
-            console.log(image.getDataUrl());
             return image.getDataUrl();
         } else {
             return false;

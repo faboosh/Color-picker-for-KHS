@@ -1,5 +1,4 @@
-
-const fs = require('fs');
+import { saveAs } from 'file-saver';
 const JSZip = require('jszip');
 
 async function exportZip(config, images, path) {
@@ -8,21 +7,28 @@ async function exportZip(config, images, path) {
     let imageBuffers = [];
 
     console.log(images);
+
     Object.keys(images).forEach(async name => {
-        if (typeof images[name].writePngToPath == "function") {
-            imageBuffers.push(images[name].getPngBase64(name));
+        if (typeof images[name].rendered != "undefined") {
+            imageBuffers.push({ name, image: images[name].rendered.base64Image });
         }
     })
 
     await Promise.all(imageBuffers).then(images => {
-        images.forEach(image => {
-            zip.file(`${image.name}.png`, image.base64Image, { base64: true });
+        images.forEach(({ name, image }) => {
+            zip.file(`${name}.png`, image, { base64: true });
         })
     })
 
-    const zipBuffer = await zip.generateAsync({ type: "uint8array" });
-
-    fs.writeFileSync(path, Buffer.from(zipBuffer));
+    if (!process.env.IS_WEB) {
+        const zipBuffer = await zip.generateAsync({ type: "uint8array" });
+        window.fs.writeFileSync(path, Buffer.from(zipBuffer));
+    } else {
+        zip.generateAsync({ type: "blob" })
+            .then((blob) => {
+                saveAs(blob, "skin.zip");
+            });
+    }
 }
 
 export { exportZip };

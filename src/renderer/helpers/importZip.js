@@ -1,10 +1,9 @@
-const AdmZip = require('adm-zip');
 import { formatConfig } from "./formatConfig";
 import { KHSImage } from "../classes/image";
 
 async function importZip(path) {
     return new Promise(async resolve => {
-        let zip = new AdmZip(path);
+        let zip = new window.AdmZip(path);
         let entries = zip.getEntries();
 
         if (!entries.some(entry => entry.entryName == "colors.conf")) {

@@ -1,8 +1,5 @@
-
-const fs = require('fs');
-
 function exportConfig(config, images, path) {
-    fs.writeFile(`${path}/colors.conf`, config, (err) => {
+    window.fs.writeFile(`${path}/colors.conf`, config, (err) => {
         if (err) throw err;
         return true;
     });

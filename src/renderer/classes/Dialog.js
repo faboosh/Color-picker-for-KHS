@@ -1,5 +1,4 @@
-const { dialog } = require('electron').remote;
-const fs = require('fs');
+
 
 export class Dialog {
     constructor(type, filters) {
@@ -10,7 +9,7 @@ export class Dialog {
     open() {
         if (this.type == 'openDirectory') {
             return new Promise(async resolve => {
-                let path = await dialog.showOpenDialog({
+                let path = await window.dialog.showOpenDialog({
                     properties: ['openDirectory'],
                     filters: this.filters
                 });
@@ -25,7 +24,7 @@ export class Dialog {
 
         if (this.type == "saveFile") {
             return new Promise(async resolve => {
-                let path = await dialog.showSaveDialog({
+                let path = await window.dialog.showSaveDialog({
                     filters: this.filters
                 });
 
@@ -39,14 +38,14 @@ export class Dialog {
 
         if (this.type = "openFile") {
             return new Promise(async (resolve, reject) => {
-                let res = await dialog.showOpenDialog({
+                let res = await window.dialog.showOpenDialog({
                     properties: ['openFile'],
                     filters: this.filters
                 });
 
                 let path = res.filePaths[0];
 
-                if (fs.existsSync(path)) {
+                if (window.fs.existsSync(path)) {
                     resolve(path);
                 } else {
                     resolve(false);
