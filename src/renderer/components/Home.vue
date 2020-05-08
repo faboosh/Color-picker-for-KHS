@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="menu-wrapper">
-      <div class="topbar">
+      <div class="topbar" v-if="!isWeb()">
         <div class="draggable" style="-webkit-app-region: drag"></div>
         <div class="window-controls">
           <button @click="minimize"></button>
@@ -26,9 +26,9 @@
               class="fab-dropdown-menu"
               @click="dropdowns.import = false"
             >
-              <ImportCurrent></ImportCurrent>
+              <ImportCurrent v-if="!isWeb()"></ImportCurrent>
               <ImportFile></ImportFile>
-              <ImportZipFile></ImportZipFile>
+              <ImportZip></ImportZip>
             </div>
           </div>
           <div class="dropdown">
@@ -43,7 +43,7 @@
               @click="dropdowns.export = false"
             >
               <ExportToZip></ExportToZip>
-              <Export></Export>
+              <Export v-if="!isWeb()"></Export>
             </div>
           </div>
           <Reset></Reset>
@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { isWeb } from "../helpers/isWeb";
+
 //Components
 import GlobalControls from "./GlobalControls";
 import Colors from "./Colors";
@@ -78,17 +80,19 @@ import Reset from "./Reset";
 import Preview from "./Preview";
 import ImportCurrent from "./ImportCurrent";
 import ImportFile from "./ImportFile";
-import ImportZipFile from "./ImportZipFile";
+import ImportZip from "./ImportZip";
 import Images from "./Images";
 import Message from "./Message";
 import ExportToZip from "./ExportToZip";
 import Slice from "./preview-assets/Slice";
 
-/*const { BrowserWindow } = require("electron").remote;
 // Retrieve focused window
-let mainWindow = BrowserWindow.getFocusedWindow();
+let mainWindow;
+if (!process.env.IS_WEB) {
+  mainWindow = window.browserWindow.getFocusedWindow();
+}
 
-console.log(mainWindow);*/
+console.log(isWeb());
 
 export default {
   data() {
@@ -111,11 +115,12 @@ export default {
     Images,
     Message,
     ExportToZip,
-    ImportZipFile,
+    ImportZip,
     Slice,
     Logo
   },
   methods: {
+    isWeb,
     maximize() {
       mainWindow.maximize();
     },

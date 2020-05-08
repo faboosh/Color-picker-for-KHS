@@ -3,6 +3,8 @@
 </template>
 
 <script>
+//Helpers
+import { isWeb } from "../helpers/isWeb";
 import { mapState, mapGetters } from "vuex";
 import { exportZip } from "../helpers/exportZip";
 import { formatExport } from "../helpers/formatExport";
@@ -20,16 +22,22 @@ export default {
   components: {},
   methods: {
     ...mapGetters(["getComputedColor", "getImages", "getAllAlpha"]),
+    isWeb,
     exportConfig: async function(e) {
-      let dialog = new Dialog("saveFile", [
-        {
-          name: "Zip archive",
-          extensions: ["zip"]
-        }
-      ]);
-      let path = await dialog.open();
+      let dialog;
+      let path;
 
-      if (path) {
+      if (!this.isWeb()) {
+        dialog = new Dialog("saveFile", [
+          {
+            name: "Zip archive",
+            extensions: ["zip"]
+          }
+        ]);
+        path = await dialog.open();
+      }
+
+      if (path || this.isWeb()) {
         let colors = JSON.parse(JSON.stringify(this.colors));
         colors = colors.map(color => this.computedColor(color, false));
 
@@ -38,18 +46,10 @@ export default {
         let originalText = e.target.innerHTML;
 
         try {
-          exportZip(output, this.getImages(), path);
-          e.target.innerHTML = "Exported";
-          e.target.classList.add("btn-success");
+          exportZip(output, this.getImages(), path, this.isWeb());
         } catch (e) {
-          e.target.innerHTML = "Export failed";
-          e.target.classList.add("btn-danger");
+          console.error(e);
         }
-
-        setTimeout(() => {
-          e.target.innerHTML = originalText;
-          e.target.classList.remove("btn-success", "btn-danger");
-        }, 1000);
       }
     }
   }

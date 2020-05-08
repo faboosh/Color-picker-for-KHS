@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver';
 const JSZip = require('jszip');
 
-async function exportZip(config, images, path) {
+async function exportZip(config, images, path, isWeb) {
     let zip = new JSZip();
     zip.file("colors.conf", config);
     let imageBuffers = [];
@@ -20,7 +20,7 @@ async function exportZip(config, images, path) {
         })
     })
 
-    if (!process.env.IS_WEB) {
+    if (!isWeb) {
         const zipBuffer = await zip.generateAsync({ type: "uint8array" });
         window.fs.writeFileSync(path, Buffer.from(zipBuffer));
     } else {

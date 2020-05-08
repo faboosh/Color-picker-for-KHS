@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from 'electron'
-const path = require('path');
 
 /**
  * Set `__static` path to static files in production
