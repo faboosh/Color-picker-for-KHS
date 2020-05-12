@@ -1,10 +1,6 @@
 <template>
   <div class="images-wrapper">
-    <h3
-      class="text-white toggle"
-      :class="{disabled: collapsed}"
-      @click="collapsed = !collapsed"
-    >Images</h3>
+    <h3 class="text-white toggle" :class="{disabled: collapsed}" @click="toggleHidden">Images</h3>
     <div class="images" :class="{hide: collapsed}">
       <div class="btn-group mb-3 mt-2" role="group">
         <button
@@ -96,6 +92,10 @@ export default {
     },
     setTarget(target) {
       this.target = target;
+      this.redrawCanvas();
+    },
+    toggleHidden() {
+      this.collapsed = !this.collapsed;
       this.redrawCanvas();
     }
   },
