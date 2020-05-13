@@ -27,7 +27,7 @@
           <font-awesome-icon class="mr-2" :style="{color: getColor('text')}" :icon="undo" size="lg"></font-awesome-icon>
           <font-awesome-icon
             class="reverse"
-            :style="{color: getInactive(getColor('text'), getColor('disabled_tint'))}"
+            :style="{color: getInactive(getColor('text'), getColor('disabled_tint'), getColor('main_background'))}"
             :icon="undo"
             size="lg"
           ></font-awesome-icon>

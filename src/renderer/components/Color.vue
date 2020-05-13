@@ -48,7 +48,8 @@ export default {
       unlock: fas.faLockOpen,
       lock: fas.faLock,
       popoverHover: false,
-      popover: false
+      popover: false,
+      undo: fas.faUndo
     };
   },
   computed: {
@@ -78,6 +79,12 @@ export default {
           .blend("white", 1 - surfacecurve(color).grayvalue())
           .hex6();
       }
+    },
+    resetColor() {
+      let color = JSON.parse(JSON.stringify(this.$props.color));
+      color.value = color.default;
+      color.default = e.target.value;
+      this.setColor(color);
     },
     onHover(e) {
       console.log(e);
