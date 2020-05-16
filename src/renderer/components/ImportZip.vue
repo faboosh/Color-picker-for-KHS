@@ -24,8 +24,7 @@ export default {
         const result = await dialog.open();
 
         if (result) {
-          const imported = await importZipWeb(result);
-          console.log(imported);
+          const imported = await importZipWeb(result.buffer);
           this.setImages(imported.images);
           this.commitColors(imported.config);
 
@@ -33,8 +32,8 @@ export default {
             EventBus.$emit("image_loaded");
           }, 0);
         }
-
-        /*let dialog = new Dialog("openFile", [
+      } else {
+        let dialog = new Dialog("openFile", [
           {
             name: "Zip archive",
             extensions: ["zip"]
@@ -47,7 +46,7 @@ export default {
           let zip = await importZip(path);
           this.setImages(zip.images);
           this.commitColors(zip.colors);
-        }*/
+        }
       }
     }
   }

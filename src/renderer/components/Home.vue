@@ -86,14 +86,6 @@ import Message from "./Message";
 import ExportToZip from "./ExportToZip";
 import Slice from "./preview-assets/Slice";
 
-// Retrieve focused window
-let mainWindow;
-if (!process.env.IS_WEB) {
-  mainWindow = window.browserWindow.getFocusedWindow();
-}
-
-console.log(isWeb());
-
 export default {
   data() {
     return {
@@ -122,13 +114,16 @@ export default {
   methods: {
     isWeb,
     maximize() {
-      mainWindow.maximize();
+      this.getWindow().maximize();
     },
     minimize() {
-      mainWindow.minimize();
+      this.getWindow().minimize();
     },
     close() {
-      mainWindow.close();
+      this.getWindow().close();
+    },
+    getWindow() {
+      return window.browserWindow.getFocusedWindow();
     }
   }
 };

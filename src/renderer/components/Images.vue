@@ -42,7 +42,9 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 import { KHSImage } from "../classes/image";
 import { Dialog } from "../classes/Dialog";
+import { WebDialog } from "../classes/webDialog";
 import { EventBus } from "../helpers/eventbus";
+import { isWeb } from "../helpers/isWeb";
 
 //Components
 import AlphaSlider from "./AlphaSlider";
@@ -61,20 +63,44 @@ export default {
     getPluginImage: function(name) {
       return this.getImage()(name);
     },
+    isWeb,
     importImage: async function() {
-      //Open dialog and get path to image
-      let dialog = new Dialog("openFile", [
-        { name: "Image", extensions: ["jpg", "jpeg", "png"] }
-      ]);
-      let path = await dialog.open();
-
-      //If user specifies path, load image
-      if (path) {
-        let image = new KHSImage(path, 1);
-        await image.loadImage();
+      if (this.isWeb()) {
+        const dialog = new WebDialog({
+          type: "open",
+          extensions: [".jpg", ".jpeg", ".png"]
+        });
+        const image = await dialog.open();
+        console.log(image);
         if (image) {
-          this.setImage({ image, target: this.target });
+          const base64Image = new Buffer(image.buffer, "binary").toString(
+            "base64"
+          );
+          const extension = image.meta.name.match(/\.[0-9a-z]+$/i)[0];
+          const urlBase = `data:image/${extension.split(".").pop()};base64,`;
+
+          this.setImage({
+            image: new KHSImage(null, 1, { urlBase, extension, base64Image }),
+            target: this.target
+          });
+
           this.redrawCanvas();
+        }
+      } else {
+        //Open dialog and get path to image
+        const dialog = new Dialog("openFile", [
+          { name: "Image", extensions: ["jpg", "jpeg", "png"] }
+        ]);
+        const path = await dialog.open();
+
+        //If user specifies path, load image
+        if (path) {
+          const image = new KHSImage(path, 1);
+          await image.loadImage();
+          if (image) {
+            this.setImage({ image, target: this.target });
+            this.redrawCanvas();
+          }
         }
       }
     },

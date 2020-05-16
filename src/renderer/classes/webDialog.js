@@ -9,6 +9,7 @@ export class WebDialog {
             let fileElem = document.createElement('input');
 
             fileElem.setAttribute('type', 'file');
+
             fileElem.setAttribute('accept', this.extensions.join(','));
 
             fileElem.click();
@@ -21,7 +22,7 @@ export class WebDialog {
                     reader.readAsArrayBuffer(path);
 
                     reader.onloadend = (e) => {
-                        resolve(e.target.result);
+                        resolve({ meta: path, buffer: e.target.result });
                     }
 
                 } else {
