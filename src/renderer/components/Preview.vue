@@ -49,8 +49,9 @@
 
       <div class="window-inner" v-if="!showEQ">
         <div class="background-image" :style="{backgroundImage: `url(${getPluginImage(target)})`}"></div>
-        <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}"></div>
-
+        <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}">
+          <Generators style="width: 70%"></Generators>
+        </div>
         <div class="footer"></div>
       </div>
 
@@ -70,6 +71,7 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import ActiveKnob from "./preview-assets/ActiveKnob";
 import Slice from "./preview-assets/Slice";
 import TopBar from "./preview-assets/TopBar";
+import Generators from "./preview-assets/Generators";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -90,7 +92,7 @@ export default {
       return this.getComputedColor()(this.getColorByLabel()(label), true);
     }
   },
-  components: { ActiveKnob, TopBar, Slice }
+  components: { ActiveKnob, TopBar, Slice, Generators }
 };
 </script>
 
@@ -139,7 +141,7 @@ export default {
 
 .main {
   width: 100%;
-  min-height: 382px;
+  min-height: 500px;
   resize: vertical;
   overflow: auto;
 }

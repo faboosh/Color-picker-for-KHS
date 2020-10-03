@@ -1,8 +1,30 @@
+import { unlinkObservers } from "../../helpers/unlinkObservers";
+
+let baseSettings = {
+    scale: 1,
+    hue: 0,
+    saturation: 100,
+    x: 0,
+    y: 0,
+    alpha: 1,
+    w: 1920,
+    h: 1920,
+    aspect: {
+        w: 2,
+        h: 3
+    }
+};
+
 const state = {
     images: {
         Phase_Plant: {},
         Multipass: {},
         Snap_Heap: {}
+    },
+    settings: {
+        Phase_Plant: unlinkObservers(baseSettings),
+        Multipass: unlinkObservers(baseSettings),
+        Snap_Heap: unlinkObservers(baseSettings),
     }
 }
 
@@ -24,6 +46,11 @@ const mutations = {
     },
     setImages(state, images) {
         state.images = images;
+    },
+    setProcessing(state, { target, settings }) {
+        if (typeof state.settings[target] !== "undefined") {
+            state.settings[target] = settings;
+        }
     }
 }
 
@@ -39,6 +66,10 @@ const actions = {
     },
     setImages({ commit }, payload) {
         commit('setImages', payload)
+    },
+    setProcessing({ commit }, payload) {
+        console.log(payload)
+        commit('setProcessing', payload)
     }
 }
 
@@ -75,6 +106,9 @@ const getters = {
             Multipass: state.images.Multipass.alpha || 0,
             Snap_Heap: state.images.Snap_Heap.alpha || 0
         }
+    },
+    getProcessingSettings: (state) => (name) => {
+        return state.settings[name] || null;
     }
 }
 

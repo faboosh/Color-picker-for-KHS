@@ -99,9 +99,6 @@ export default {
   props: ["target"],
   data() {
     return {
-      Phase_Plant: unlinkObservers(params),
-      Multipass: unlinkObservers(params),
-      Snap_Heap: unlinkObservers(params),
       current: unlinkObservers(params),
       renderer: {}
     };
@@ -125,13 +122,18 @@ export default {
     ...mapState(["images"])
   },
   methods: {
-    ...mapActions(["setRendered"]),
+    ...mapActions(["setRendered", "setProcessing"]),
+    ...mapGetters(["getProcessingSettings"]),
+    getProcessing(target) {
+      return this.getProcessingSettings()(target);
+    },
     resize() {
       let { canvas } = this.$refs;
-      let { aspect } = this[this.$props.target];
+      let { aspect } = this.getProcessing(this.$props.target);
       let unit = canvas.parentNode.clientWidth / aspect.w;
       let width = canvas.parentNode.clientWidth;
       let height = unit * aspect.h;
+      console.log(width, height);
       canvas.style.height = height + "px";
       canvas.style.width = width + "px";
     },
@@ -139,7 +141,7 @@ export default {
       let { canvas } = this.$refs;
       let { target } = this.$props;
       let { images } = this.images;
-      this.current = unlinkObservers(this[target]);
+      this.current = unlinkObservers(this.getProcessing(this.target));
       let targetImg = images[target];
 
       if (targetImg.alpha) {
@@ -150,49 +152,56 @@ export default {
         this.setRendered({ target, image });
       }
     },
+    commitSettings: function() {
+      this.setProcessing({ target: this.target, settings: this.current });
+    },
     onSetScale: function(val) {
       val = val / 100;
-      this[this.$props.target].scale = val;
-      this.render();
+      this.current.scale = val;
+      this.onSetProp();
     },
     onSetY: function(val) {
-      this[this.$props.target].y = val;
-      this.render();
+      this.current.y = val;
+      this.onSetProp();
     },
     onSetX: function(val) {
-      this[this.$props.target].x = val;
-      this.render();
+      this.current.x = val;
+      this.onSetProp();
     },
     onSetAlpha: function(val) {
-      this[this.$props.target].alpha = val / 100;
-      this.render();
+      this.current.alpha = val / 100;
+      this.onSetProp();
     },
     onSetHue: function(val) {
-      this[this.$props.target].hue = val;
-      this.render();
+      this.current.hue = val;
+      this.onSetProp();
     },
     onSetSaturation: function(val) {
-      this[this.$props.target].saturation = val;
+      this.current.saturation = val;
+      this.onSetProp();
+    },
+    onSetProp: function() {
+      this.commitSettings();
       this.render();
     },
     getW() {
-      return this[this.$props.target].w;
+      return this.getProcessing(this.$props.target).w;
     },
     getH() {
-      return this[this.$props.target].h;
+      return this.getProcessing(this.$props.target).h;
     },
     getX() {
-      return this[this.$props.target].x;
+      return this.getProcessing(this.$props.target).x;
     },
     getY() {
-      return this[this.$props.target].y;
+      return this.getProcessing(this.$props.target).y;
     },
     getAlpha() {
       console.log("alpha");
-      return this[this.$props.target].alpha * 100;
+      return this.getProcessing(this.$props.target).alpha * 100;
     },
     getScale() {
-      return this[this.$props.target].scale * 100;
+      return this.getProcessing(this.$props.target).scale * 100;
     },
     changeImage() {
       this.$emit("change_image");
@@ -201,19 +210,19 @@ export default {
       this.$emit("remove_image");
     },
     getAspect() {
-      return this[this.$props.target].aspect;
+      return this.getProcessing(this.$props.target).aspect;
     },
     setAspectW(e) {
       console.log(e.target.value);
-      this[this.$props.target].aspect.w = e.target.value;
+      this.current.aspect.w = e.target.value;
+      this.onSetProp();
       this.resize();
-      this.render();
     },
     setAspectH(e) {
       console.log(e.target.value);
-      this[this.$props.target].aspect.h = e.target.value;
+      this.current.aspect.h = e.target.value;
+      this.onSetProp();
       this.resize();
-      this.render();
     }
   },
   components: {
@@ -277,6 +286,7 @@ canvas {
       align-self: center;
     }
     input[type="number"] {
+      -moz-appearance: textfield;
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;

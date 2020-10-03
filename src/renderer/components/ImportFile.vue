@@ -48,9 +48,4 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 95%;
-  padding: 2vw 0;
-  max-width: none;
-}
 </style>

@@ -9,7 +9,6 @@ export class WebDialog {
             let fileElem = document.createElement('input');
 
             fileElem.setAttribute('type', 'file');
-
             fileElem.setAttribute('accept', this.extensions.join(','));
 
             fileElem.click();

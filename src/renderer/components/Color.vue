@@ -1,5 +1,5 @@
 <template>
-  <div class="color">
+  <div class="color mini">
     <div
       class="card-body"
       v-bind:style="{ backgroundColor: computedColor(color, true), color: getTextColor(computedColor(color, true))}"
@@ -34,8 +34,11 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+//Components
 import Color from "./Color";
+
+//Helpers
+import { mapState, mapActions, mapGetters } from "vuex";
 import { surfacecurve } from "../assets/surfacecurve-color";
 import { unlinkObservers } from "../helpers/unlinkObservers";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -123,6 +126,14 @@ export default {
   position: relative;
   border: none;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mini {
+  width: calc(100% / 7 - 10px);
+
+  .card-title {
+    display: none;
+  }
 }
 
 .color .card-title {

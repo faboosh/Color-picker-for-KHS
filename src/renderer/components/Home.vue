@@ -53,15 +53,15 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-xl-6 resize">
-          <Colors></Colors>
-          <Images></Images>
-        </div>
-        <div class="col-xl-6 resize">
+        <div class="col-xl-5 resize">
           <GlobalControls></GlobalControls>
           <div class="mb-4"></div>
+          <Images></Images>
+        </div>
+        <div class="col-xl-7 resize">
           <Preview></Preview>
           <div class="mb-4"></div>
+          <Colors></Colors>
         </div>
       </div>
     </div>

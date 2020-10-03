@@ -19,7 +19,7 @@ export default {
     ...mapActions(["commitColors", "setImages", "commitColors"]),
     isWeb,
     importZip: async function() {
-      if (this.isWeb()) {
+      if (!this.isWeb()) {
         const dialog = new WebDialog({ type: "open", extensions: [".zip"] });
         const result = await dialog.open();
 

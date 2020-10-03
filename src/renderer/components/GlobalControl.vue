@@ -115,33 +115,10 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../scss/slider.scss";
 .control {
   width: calc(50% - 10px);
-}
-input[type="range"] {
-  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  width: 100%; /* Specific width is required for Firefox. */
-  background: #333333; /* Otherwise white in Chrome */
-  border: none;
-  border-radius: 5px 0px 0px 5px;
-
-  &:focus,
-  &:active {
-    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-    background: #333333;
-  }
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 36px;
-    width: 16px;
-    border-radius: 3px;
-    background: #4a4a4a;
-    cursor: pointer;
-    margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-  }
 }
 
 input[type="color"] {
@@ -160,15 +137,6 @@ input[type="color"] {
     left: 0;
     bottom: 0;
     right: 0;
-  }
-}
-
-.inner {
-  display: flex;
-  .btn {
-    border: none;
-    border-radius: 0px 5px 5px 0px;
-    background: #333;
   }
 }
 

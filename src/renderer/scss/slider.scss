@@ -1,13 +1,13 @@
 input[type="range"] {
-    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-    width: 100%; /* Specific width is required for Firefox. */
-    background: #333333; /* Otherwise white in Chrome */
+    -webkit-appearance: none;
+    width: 100%;
+    background: #333333;
     border: none;
     border-radius: 5px 0px 0px 5px;
   
     &:focus,
     &:active {
-      outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+      outline: none;
       background: #333333;
     }
   
@@ -18,7 +18,16 @@ input[type="range"] {
       border-radius: 3px;
       background: #4a4a4a;
       cursor: pointer;
-      margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+      margin-top: 0px;
+    }
+
+    &::-moz-range-thumb {
+      border: none;
+      height: 36px;
+      width: 16px;
+      border-radius: 3px;
+      background: #4a4a4a;
+      cursor: pointer;
     }
   }
 
