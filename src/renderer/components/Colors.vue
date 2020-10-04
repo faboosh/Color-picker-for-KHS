@@ -1,62 +1,94 @@
 <template>
-  <div class="colors-wrapper">
-    <h3
-      class="text-white toggle"
-      :class="{disabled: collapsed}"
-      @click="collapsed = !collapsed"
-    >Colors</h3>
-    <div class="colors mt-4" :class="{hide: collapsed}">
-      <Color v-for="(color, i) in colors" :key="i" :color="color"></Color>
+  <div class="single-color">
+    <Picker
+      ref="picker"
+      width="100%"
+      :color="colors[selectedColor].value"
+      @colorChange="onColorChange"
+    />
+    <div class="colors">
+      <Color
+        v-for="(color, i) in colors"
+        :key="i"
+        :index="i"
+        :color="color"
+        @selectColor="onSelectColor"
+        :selected="selectedColor"
+      ></Color>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
+import { exportConfig } from "../helpers/exportElectron";
+import { surfacecurve } from "../assets/surfacecurve-color";
+
+//Components
 import Color from "./Color";
+import Picker from "./Picker";
 
 export default {
   data() {
     return {
-      collapsed: false
+      selectedColor: 0,
     };
+  },
+  methods: {
+    ...mapActions(["resetColors", "setMessage", "resetControls"]),
+    ...mapActions(["setColor", "setColorLock"]),
+    onSelectColor(i) {
+      console.log(i);
+      this.selectedColor = i;
+      this.$refs.picker.hsv = surfacecurve(
+        this.colors[this.selectedColor].value
+      ).hsv();
+    },
+    onColorChange(value) {
+      const color = JSON.parse(JSON.stringify(this.colors[this.selectedColor]));
+      color.value = value;
+      console.log(color);
+      this.setColor(color);
+    },
   },
   computed: {
     ...mapState({
-      colors: state => state.Colors.current
-    })
+      colors: (state) => state.Colors.current,
+    }),
   },
   components: {
-    Color
+    Color,
+    Picker,
   },
-  methods: {
-    ...mapActions([]),
-    changeColor(e) {
-      console.log(e);
-    }
-  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.colors {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin-left: -8px;
-}
+<style scoped lang="scss">
+@import "../scss/global.scss";
 
-.toggle {
-  cursor: pointer;
-  user-select: none;
-}
+.single-color {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: calc(
+    #{$sidebar-height} - #{$toggle-height} - #{$padding-unit} * 3
+  );
 
-.disabled {
-  color: #707070 !important;
-}
+  .picker {
+    margin-bottom: 5px;
+    border-radius: 0 0 5px 5px;
+    grid-row: 1;
+  }
 
-.hide {
-  display: none;
+  .colors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    overflow-y: scroll;
+    border-radius: $border-radius;
+    background: $gray-4;
+    padding: $padding-unit;
+    padding-bottom: 0;
+    grid-row: 2;
+  }
 }
 </style>

@@ -10,11 +10,13 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 library.add(fas);
 
 export default {
-  name: "color-picker-khs"
+  name: "color-picker-khs",
 };
 </script>
 
 <style lang="scss">
+@import "./scss/global.scss";
+
 .form-control,
 input {
   outline: none !important;
@@ -31,15 +33,21 @@ input {
   user-select: none;
 }
 
-html {
-  overflow: scroll;
-  overflow-x: hidden;
+.text-khs-white {
+  color: $text-khs-white;
+}
+
+body {
+  background-color: $gray-3;
+  overflow: hidden;
 }
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 5px;
+  height: 8px;
+  background: $gray-3;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ff0000;
+  background: #888;
+  border-radius: $border-radius;
 }
 </style>

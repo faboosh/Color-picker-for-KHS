@@ -1,33 +1,32 @@
 <template>
-  <div class="color mini">
+  <div
+    class="color mini"
+    :class="{ selected: isSelected }"
+    @click="selectColor"
+  >
     <div
       class="card-body"
-      v-bind:style="{ backgroundColor: computedColor(color, true), color: getTextColor(computedColor(color, true))}"
+      v-bind:style="{
+        backgroundColor: computedColor(color, true),
+        color: getTextColor(computedColor(color, true)),
+      }"
       :label="color.label"
     >
-      <h5 class="card-title">{{color.niceLabel}}</h5>
       <div class="buttonWrapper">
-        <input
-          class="form-control"
-          type="color"
-          :value="color.default"
-          @change="onSetColor"
-          :title="getCapitalized(color.niceLabel)"
-        />
         <button
           class="btn btn-secondary"
-          v-bind:style="{ backgroundColor: 'rgba(0,0,0,0)', color: getTextColor(computedColor(color, true))}"
+          v-bind:style="{
+            backgroundColor: 'rgba(0,0,0,0)',
+            color: getTextColor(computedColor(color, true)),
+          }"
           @click="toggleColorLock"
         >
-          <font-awesome-icon :icon="color.locked ? lock : unlock"></font-awesome-icon>
+          <font-awesome-icon
+            :icon="color.locked ? lock : unlock"
+          ></font-awesome-icon>
         </button>
-        <input
-          class="hex-input"
-          type="text"
-          v-bind:style="{ backgroundColor: 'rgba(0,0,0,0)', color: getTextColor(computedColor(color, true))}"
-          :value="color.default"
-          @change="onSetColor"
-        />
+
+        <h5 class="card-title">{{ color.niceLabel }}</h5>
       </div>
     </div>
   </div>
@@ -35,7 +34,6 @@
 
 <script>
 //Components
-import Color from "./Color";
 
 //Helpers
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -45,38 +43,39 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
 export default {
-  props: ["color"],
+  props: ["color", "selected", "index"],
   data() {
     return {
       unlock: fas.faLockOpen,
       lock: fas.faLock,
       popoverHover: false,
       popover: false,
-      undo: fas.faUndo
+      undo: fas.faUndo,
     };
   },
   computed: {
     computedColor() {
       return this.getComputedColor();
-    }
+    },
+    isSelected() {
+      return this.$props.index == this.selected;
+    },
   },
   methods: {
     ...mapGetters(["getComputedColor"]),
     ...mapActions(["setColor", "setColorLock"]),
-    onSetColor: function(e) {
+    onSetColor: function (e) {
       let color = JSON.parse(JSON.stringify(this.$props.color));
       color.value = e.target.value;
       color.default = e.target.value;
       this.setColor(color);
     },
-    toggleColorLock: function() {
+    toggleColorLock: function () {
       this.setColorLock(this.$props.color);
     },
-    getTextColor: function(color) {
+    getTextColor: function (color) {
       if (surfacecurve(color).grayvalue() > 0.5) {
-        return surfacecurve(color)
-          .blend("black", 0.6)
-          .hex6();
+        return surfacecurve(color).blend("black", 0.6).hex6();
       } else {
         return surfacecurve(color)
           .blend("white", 1 - surfacecurve(color).grayvalue())
@@ -110,82 +109,83 @@ export default {
       }
 
       return str.join(" ");
-    }
+    },
+    selectColor() {
+      this.$emit("selectColor", this.$props.index);
+    },
   },
   components: {
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../scss/global.scss";
+$items-per-row: 1;
 .color {
-  width: calc(100% / 4 - 10px);
+  width: calc(100% / #{$items-per-row});
+  box-sizing: border-box;
   margin-bottom: 10px;
   position: relative;
   border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+
+  &:nth-child(#{ $items-per-row}n) {
+    margin-right: 0;
+  }
+
+  .card-body {
+    border-radius: $border-radius;
+  }
+
+  /*&.selected:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0),
+      rgba(255, 255, 255, 0.2)
+    );
+  }*/
+  &.selected:after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.5;
+    background: white;
+  }
 }
 
 .mini {
-  width: calc(100% / 7 - 10px);
+  width: calc(100% / #{$items-per-row});
+
+  .card-body {
+    padding: 5px;
+  }
+
+  .hex-input {
+    display: none;
+  }
 
   .card-title {
-    display: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
   }
 }
 
 .color .card-title {
   text-transform: capitalize;
-}
-
-.fab-popover {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, calc(-100% - 5px));
-  padding: 10px;
-  z-index: 1000;
-  white-space: nowrap;
-  text-transform: capitalize;
-  border-radius: 5px;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
-  min-width: 100%;
-  text-align: center;
-}
-
-.fab-popover:after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-}
-
-.hex-input {
-  z-index: 100;
-  margin-left: auto;
-  width: 62px;
-  font-size: 0.9em;
-}
-
-.color input[type="color"] {
-  border: none;
-  padding: 0;
-  height: 0;
-  width: 0;
-  border-radius: 5px;
-  outline: none;
-  opacity: 0;
-  height: 0;
-
-  &:after {
-    position: absolute;
-    content: "Choose color";
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
 }
 
 .card-title {
@@ -202,11 +202,11 @@ export default {
 
 .buttonWrapper {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
 }
 
 .buttonWrapper button:first-of-type {
-  margin-right: 5px;
+  margin: 0 5px;
   padding: 0;
 }
 

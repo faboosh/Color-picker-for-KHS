@@ -1,25 +1,20 @@
 <template>
-  <div class="controls">
-    <div class="top">
-      <h3
-        class="text-white toggle"
-        :class="{disabled: collapsed}"
-        @click="collapsed = !collapsed"
-      >Global Controls</h3>
-      <button
-        class="btn btn-danger"
-        :class="{hide: collapsed}"
-        @click="commitToPalette"
-      >Commit to palette</button>
-    </div>
-
-    <div class="inner" :class="{hide: collapsed}">
+  <div class="controls" :class="{ hide: collapsed }">
+    <div class="inner">
       <GlobalControl
         v-for="(control, i) in controls"
         :key="i"
         :control="control"
+        class="mb-3"
         @modify="setControl"
       ></GlobalControl>
+      <button
+        class="btn btn-danger"
+        :class="{ hide: collapsed }"
+        @click="commitToPalette"
+      >
+        Commit to palette
+      </button>
     </div>
   </div>
 </template>
@@ -27,41 +22,47 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 import GlobalControl from "./GlobalControl";
+
 import { unlinkObservers } from "../helpers/unlinkObservers";
 
 export default {
-  data() {
-    return {
-      collapsed: false
-    };
-  },
+  props: ["collapsed"],
   computed: {
     ...mapState({
-      controls: state => state.GlobalControls.controls
-    })
+      controls: (state) => state.GlobalControls.controls,
+    }),
   },
   components: {
-    GlobalControl
+    GlobalControl,
   },
   methods: {
     ...mapActions(["setControl", "resetControls", "commitColors"]),
     ...mapGetters(["getComputedColor", "getColors"]),
-    commitToPalette: function() {
+    commitToPalette: function () {
       let colors = unlinkObservers(this.getColors());
-      colors = colors.map(color => {
+      colors = colors.map((color) => {
         color = this.getComputedColor()(color, false);
         color.default = color.value;
         return color;
       });
       this.commitColors(colors);
       this.resetControls();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../scss/global.scss";
+
+.controls {
+  z-index: 10000;
+  background: $gray-4;
+  padding: 15px;
+  border-radius: $border-radius;
+}
+
 .toggle {
   cursor: pointer;
   user-select: none;
@@ -81,6 +82,10 @@ export default {
   width: 100%;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  .btn {
+    width: 100%;
+  }
 }
 
 .hide {

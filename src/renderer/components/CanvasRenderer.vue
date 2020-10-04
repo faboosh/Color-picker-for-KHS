@@ -3,18 +3,30 @@
     <div class="rendering-surface">
       <div class="canvas">
         <div class="canvas-inner" @click="changeImage">
-          <h5 class="text-white">Click to replace image</h5>
+          <p class="text-khs-white">Click to replace image</p>
           <canvas ref="canvas" :width="1920" :height="1920"></canvas>
         </div>
-        <button class="btn btn-danger mb-3 remove-image" @click="removeImage">Remove image</button>
+        <button class="btn btn-danger mb-3 remove-image" @click="removeImage">
+          Remove image
+        </button>
       </div>
       <div class="controls">
         <div class="aspect-ratio">
-          <h6 class="text-white">Aspect ratio</h6>
+          <p class="text-khs-white">Aspect ratio</p>
           <div class="inner">
-            <input :value="getAspect().w" @change="setAspectW" type="number" class="form-control" />
+            <input
+              :value="getAspect().w"
+              @change="setAspectW"
+              type="number"
+              class="form-control"
+            />
             <span>x</span>
-            <input :value="getAspect().h" @change="setAspectH" type="number" class="form-control" />
+            <input
+              :value="getAspect().h"
+              @change="setAspectH"
+              type="number"
+              class="form-control"
+            />
           </div>
         </div>
         <Slider
@@ -90,9 +102,9 @@ let params = {
   w: 1920,
   h: 1920,
   aspect: {
-    w: 2,
-    h: 3
-  }
+    w: 3,
+    h: 1,
+  },
 };
 
 export default {
@@ -100,7 +112,7 @@ export default {
   data() {
     return {
       current: unlinkObservers(params),
-      renderer: {}
+      renderer: {},
     };
   },
   mounted() {
@@ -119,7 +131,7 @@ export default {
     this.renderer = new Renderer(this.$refs.canvas);
   },
   computed: {
-    ...mapState(["images"])
+    ...mapState(["images"]),
   },
   methods: {
     ...mapActions(["setRendered", "setProcessing"]),
@@ -152,35 +164,35 @@ export default {
         this.setRendered({ target, image });
       }
     },
-    commitSettings: function() {
+    commitSettings: function () {
       this.setProcessing({ target: this.target, settings: this.current });
     },
-    onSetScale: function(val) {
+    onSetScale: function (val) {
       val = val / 100;
       this.current.scale = val;
       this.onSetProp();
     },
-    onSetY: function(val) {
+    onSetY: function (val) {
       this.current.y = val;
       this.onSetProp();
     },
-    onSetX: function(val) {
+    onSetX: function (val) {
       this.current.x = val;
       this.onSetProp();
     },
-    onSetAlpha: function(val) {
+    onSetAlpha: function (val) {
       this.current.alpha = val / 100;
       this.onSetProp();
     },
-    onSetHue: function(val) {
+    onSetHue: function (val) {
       this.current.hue = val;
       this.onSetProp();
     },
-    onSetSaturation: function(val) {
+    onSetSaturation: function (val) {
       this.current.saturation = val;
       this.onSetProp();
     },
-    onSetProp: function() {
+    onSetProp: function () {
       this.commitSettings();
       this.render();
     },
@@ -223,15 +235,16 @@ export default {
       this.current.aspect.h = e.target.value;
       this.onSetProp();
       this.resize();
-    }
+    },
   },
   components: {
-    Slider
-  }
+    Slider,
+  },
 };
 </script>
 
 <style scoped lang="scss">
+@import "../scss/global.scss";
 canvas {
   transition: 0.2s opacity;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -245,7 +258,7 @@ canvas {
   position: relative;
   z-index: 10;
 
-  h5 {
+  p {
     opacity: 0;
     position: absolute;
     top: 50%;
@@ -255,7 +268,7 @@ canvas {
     white-space: nowrap;
   }
 
-  &:hover > h5 {
+  &:hover > p {
     opacity: 1;
   }
 }
@@ -295,7 +308,7 @@ canvas {
 
       background: #333;
       color: white;
-      border-radius: 5px;
+      border-radius: $border-radius;
       padding: 10px;
     }
   }
@@ -303,16 +316,16 @@ canvas {
 
 .rendering-surface {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-between;
 
   .controls,
   .canvas {
-    width: calc(50% - 10px);
+    width: 100%;
   }
 
   .canvas {
-    padding-top: 25px;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <span class="text-white">{{message}}</span>
+  <span class="text-khs-white">{{ message }}</span>
 </template>
 
 <script>
@@ -7,9 +7,9 @@ import { mapState, mapActions } from "vuex";
 export default {
   computed: {
     ...mapState({
-      message: state => state.Message.message
-    })
-  }
+      message: (state) => state.Message.message,
+    }),
+  },
 };
 </script>
 

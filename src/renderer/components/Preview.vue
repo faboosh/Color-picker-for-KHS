@@ -1,62 +1,76 @@
 <template>
   <div class="preview-wrapper">
     <div class="top mb-3">
-      <h3
-        class="text-white toggle"
-        :class="{disabled: collapsed}"
-        @click="collapsed = !collapsed"
-      >Preview</h3>
       <div v-if="!collapsed">
-        <span class="text-white mx-2 mb-n2">Background</span>
+        <span class="text-khs-white mx-2 mb-n2">Background</span>
         <div class="btn-group" role="group">
           <button
             class="btn btn-secondary"
-            :class="{active: target == 'Phase_Plant'}"
+            :class="{ active: target == 'Phase_Plant' }"
             @click="target = 'Phase_Plant'"
-          >PP</button>
+          >
+            PP
+          </button>
           <button
             class="btn btn-secondary"
-            :class="{active: target == 'Multipass'}"
+            :class="{ active: target == 'Multipass' }"
             @click="target = 'Multipass'"
-          >MP</button>
+          >
+            MP
+          </button>
           <button
             class="btn btn-secondary"
-            :class="{active: target == 'Snap_Heap'}"
+            :class="{ active: target == 'Snap_Heap' }"
             @click="target = 'Snap_Heap'"
-          >SH</button>
+          >
+            SH
+          </button>
         </div>
-        <span class="text-white mx-2 mb-n2">Current view</span>
+        <span class="text-khs-white mx-2 mb-n2">Current view</span>
         <div class="btn-group" role="group" v-if="!collapsed">
           <button
             class="btn btn-secondary"
-            :class="{active: showEQ == false}"
+            :class="{ active: showEQ == false }"
             @click="showEQ = false"
-          >Main</button>
+          >
+            Main
+          </button>
           <button
             class="btn btn-secondary"
-            :class="{active: showEQ == true}"
+            :class="{ active: showEQ == true }"
             @click="showEQ = true"
-          >EQ</button>
+          >
+            EQ
+          </button>
         </div>
       </div>
     </div>
     <div
       class="window-wrapper"
-      :class="{hide: collapsed}"
-      :style="{backgroundColor: getColor('panel_background')}"
+      :class="{ hide: collapsed }"
+      :style="{ backgroundColor: getColor('panel_background') }"
     >
       <TopBar :title="showEQ ? 'SnapEQ' : 'ColorPicker'"></TopBar>
 
       <div class="window-inner" v-if="!showEQ">
-        <div class="background-image" :style="{backgroundImage: `url(${getPluginImage(target)})`}"></div>
-        <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}">
+        <div
+          class="background-image"
+          :style="{ backgroundImage: `url(${getPluginImage(target)})` }"
+        ></div>
+        <div
+          class="main"
+          :style="{ border: `10px solid ${getColor('main_background')}` }"
+        >
           <Generators style="width: 70%"></Generators>
         </div>
         <div class="footer"></div>
       </div>
 
       <div class="window-inner" v-if="showEQ">
-        <div class="main" :style="{border: `10px solid ${getColor('main_background')}`}">
+        <div
+          class="main"
+          :style="{ border: `10px solid ${getColor('main_background')}` }"
+        >
           <Slice></Slice>
         </div>
       </div>
@@ -80,23 +94,24 @@ export default {
     return {
       collapsed: false,
       showEQ: false,
-      target: "Phase_Plant"
+      target: "Phase_Plant",
     };
   },
   methods: {
     ...mapGetters(["getColorByLabel", "getComputedColor", "getRenderedImage"]),
-    getPluginImage: function(name) {
+    getPluginImage: function (name) {
       return this.getRenderedImage()(name);
     },
-    getColor: function(label) {
+    getColor: function (label) {
       return this.getComputedColor()(this.getColorByLabel()(label), true);
-    }
+    },
   },
-  components: { ActiveKnob, TopBar, Slice, Generators }
+  components: { ActiveKnob, TopBar, Slice, Generators },
 };
 </script>
 
 <style scoped lang="scss">
+@import "../scss/global.scss";
 .toggle {
   cursor: pointer;
   user-select: none;
@@ -107,9 +122,14 @@ export default {
 }
 
 .top {
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  position: absolute;
+  z-index: 1000;
+  background: #171717;
+  right: 0;
+  padding: 5px;
+  border-radius: $border-radius;
 }
 
 .hide {
@@ -117,7 +137,7 @@ export default {
 }
 
 .window-wrapper {
-  width: 100%;
+  width: 100vh;
   overflow: hidden;
   position: relative;
 

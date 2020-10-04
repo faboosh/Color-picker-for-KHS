@@ -1,9 +1,12 @@
+@import "./global.scss";
+
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
     background: #333333;
     border: none;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: $border-radius 0px 0px $border-radius;
+    height: 28px;
   
     &:focus,
     &:active {
@@ -13,20 +16,20 @@ input[type="range"] {
   
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 36px;
+      height: 28px;
       width: 16px;
-      border-radius: 3px;
-      background: #4a4a4a;
+      border-radius: $border-radius;
+      background: $text-khs-white;
       cursor: pointer;
       margin-top: 0px;
     }
 
     &::-moz-range-thumb {
       border: none;
-      height: 36px;
+      height: 28px;
       width: 16px;
-      border-radius: 3px;
-      background: #4a4a4a;
+      border-radius: $border-radius;
+      background: $text-khs-white;
       cursor: pointer;
     }
   }
@@ -35,7 +38,15 @@ input[type="range"] {
     display: flex;
     .btn {
       border: none;
-      border-radius: 0px 5px 5px 0px;
+      border-radius: 0px $border-radius $border-radius 0px;
       background: #333;
+      height: 28px;
+      position: relative;
+      .fa-undo {
+        position:relative;
+        top: 50%;
+        transform: translateY(-33%);
+        font-size: 14px !important;
+      }
     }
   }

@@ -1,27 +1,32 @@
 <template>
   <div class="images-wrapper">
-    <h3 class="text-white toggle" :class="{disabled: collapsed}" @click="toggleHidden">Images</h3>
-    <div class="images" :class="{hide: collapsed}">
+    <div class="images">
       <div class="btn-group mb-3 mt-2" role="group">
         <button
           class="btn btn-secondary"
-          :class="{active: target == 'Phase_Plant'}"
+          :class="{ active: target == 'Phase_Plant' }"
           @click="setTarget('Phase_Plant')"
-        >Phase Plant</button>
+        >
+          Phase Plant
+        </button>
         <button
           class="btn btn-secondary"
-          :class="{active: target == 'Multipass'}"
+          :class="{ active: target == 'Multipass' }"
           @click="setTarget('Multipass')"
-        >Multipass</button>
+        >
+          Multipass
+        </button>
         <button
           class="btn btn-secondary"
-          :class="{active: target == 'Snap_Heap'}"
+          :class="{ active: target == 'Snap_Heap' }"
           @click="setTarget('Snap_Heap')"
-        >SnapHeap</button>
+        >
+          SnapHeap
+        </button>
       </div>
 
       <div class="image-wrapper">
-        <div class="preview-wrapper" :class="{hide: !getPluginImage(target)}">
+        <div class="preview-wrapper" :class="{ hide: !getPluginImage(target) }">
           <CanvasRenderer
             class="preview"
             :target="target"
@@ -30,8 +35,13 @@
           ></CanvasRenderer>
         </div>
         <div class="import-wrapper" v-if="!getPluginImage(target)">
-          <h5>There doesn't appear to be an image loaded for {{target.replace("_", " ")}}</h5>
-          <button class="btn btn-secondary" @click="importImage">Import image</button>
+          <h5>
+            There doesn't appear to be an image loaded for
+            {{ target.replace("_", " ") }}
+          </h5>
+          <button class="btn btn-secondary" @click="importImage">
+            Import image
+          </button>
         </div>
       </div>
     </div>
@@ -54,21 +64,21 @@ export default {
   data() {
     return {
       collapsed: true,
-      target: "Phase_Plant"
+      target: "Phase_Plant",
     };
   },
   methods: {
     ...mapGetters(["getImage", "getAlpha"]),
     ...mapActions(["setImage"]),
-    getPluginImage: function(name) {
+    getPluginImage: function (name) {
       return this.getImage()(name);
     },
     isWeb,
-    importImage: async function() {
+    importImage: async function () {
       if (this.isWeb()) {
         const dialog = new WebDialog({
           type: "open",
-          extensions: [".jpg", ".jpeg", ".png"]
+          extensions: [".jpg", ".jpeg", ".png"],
         });
         const image = await dialog.open();
         console.log(image);
@@ -81,7 +91,7 @@ export default {
 
           this.setImage({
             image: new KHSImage(null, 1, { urlBase, extension, base64Image }),
-            target: this.target
+            target: this.target,
           });
 
           this.redrawCanvas();
@@ -89,7 +99,7 @@ export default {
       } else {
         //Open dialog and get path to image
         const dialog = new Dialog("openFile", [
-          { name: "Image", extensions: ["jpg", "jpeg", "png"] }
+          { name: "Image", extensions: ["jpg", "jpeg", "png"] },
         ]);
         const path = await dialog.open();
 
@@ -107,7 +117,7 @@ export default {
     removeImage() {
       this.setImage({ image: {}, target: this.target });
     },
-    getAlphaByName: function() {
+    getAlphaByName: function () {
       let alpha = this.getAlpha()(this.target) * 100;
       return alpha;
     },
@@ -123,20 +133,25 @@ export default {
     toggleHidden() {
       this.collapsed = !this.collapsed;
       this.redrawCanvas();
-    }
+    },
   },
   components: {
     AlphaSlider,
-    CanvasRenderer
-  }
+    CanvasRenderer,
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../scss/global.scss";
 .toggle {
   cursor: pointer;
   user-select: none;
+}
+
+.images {
+  background-color: $gray-4;
 }
 
 .disabled {
@@ -150,7 +165,7 @@ export default {
 .image-wrapper {
   width: 100%;
   background: rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: $padding-unit;
 
   .image-controls {
     display: flex;

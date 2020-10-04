@@ -1,0 +1,33 @@
+
+
+$sliderHeight: 15px;
+$thumbHeight: 20px;
+$thumbColor: rgb(138, 138, 138);
+
+$toggle-height: 35px;
+
+$gray-1: #111;
+$gray-2: #171717;
+$gray-3: #282625;
+$gray-4: #333130;
+$gray-5: #454341;
+$gray-6: #5c5b5b;
+
+$container-padding: 25px;
+$container-mt: 56px + $container-padding;
+
+$view-height: calc(100vh - #{$container-mt});
+
+$component-boxshadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+
+$text-khs-white: #Cacaca;
+
+$border-radius: 0px;
+
+$sidebar-height: calc(#{$view-height} - (#{$container-padding} * 2));
+
+$padding-unit: 5px;
+
+.btn {
+    border-radius: $border-radius !important;
+}

@@ -1,8 +1,14 @@
 <template>
-  <div class="control mb-3">
+  <div class="control mb-1">
     <div class="color">
-      <h6 class="mt-1 text-white title" :class="{disabled: hide}" @click="hide = !hide">{{title}}</h6>
-      <div class="inner" :class="{hide: hide}">
+      <p
+        class="text-khs-white title"
+        :class="{ disabled: hide }"
+        @click="hide = !hide"
+      >
+        {{ title }}
+      </p>
+      <div class="inner" :class="{ hide: hide }">
         <input
           ref="slider"
           type="range"
@@ -10,7 +16,6 @@
           :max="max"
           :value="value"
           @change="onChange"
-          class="form-control"
         />
         <button class="btn btn-secondary" @click="reset">
           <font-awesome-icon :icon="undo"></font-awesome-icon>
@@ -30,23 +35,23 @@ export default {
   data() {
     return {
       undo: fas.faUndo,
-      hide: this.$props.collapsed
+      hide: this.$props.collapsed,
     };
   },
   mounted() {},
   methods: {
-    onChange: function(e) {
+    onChange: function (e) {
       this.$emit("change", e.target.value);
     },
-    reset: function() {
+    reset: function () {
       this.$refs.slider.value = this.$props.defaultVal;
 
       this.$emit("change", this.$props.defaultVal);
-    }
+    },
   },
   components: {
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 };
 </script>
 
@@ -60,6 +65,7 @@ export default {
 
 .title {
   user-select: none;
+  margin-bottom: 5px;
   cursor: pointer;
 }
 

@@ -20,7 +20,9 @@
               class="btn btn-secondary dropdown-toggle"
               type="button"
               @click="dropdowns.import = !dropdowns.import"
-            >Import</button>
+            >
+              Import
+            </button>
             <div
               v-if="dropdowns.import"
               class="fab-dropdown-menu"
@@ -36,7 +38,9 @@
               class="btn btn-secondary dropdown-toggle"
               type="button"
               @click="dropdowns.export = !dropdowns.export"
-            >Export</button>
+            >
+              Export
+            </button>
             <div
               v-if="dropdowns.export"
               class="fab-dropdown-menu"
@@ -46,22 +50,18 @@
               <Export v-if="!isWeb()"></Export>
             </div>
           </div>
+          <div class="separator"></div>
           <Reset></Reset>
         </div>
       </div>
     </div>
-
     <div class="container">
       <div class="row">
-        <div class="col-xl-5 resize">
-          <GlobalControls></GlobalControls>
-          <div class="mb-4"></div>
-          <Images></Images>
+        <div class="col-xl-9">
+          <PreviewMock />
         </div>
-        <div class="col-xl-7 resize">
-          <Preview></Preview>
-          <div class="mb-4"></div>
-          <Colors></Colors>
+        <div class="col-xl-3">
+          <Menu class="colorsComp" />
         </div>
       </div>
     </div>
@@ -70,14 +70,18 @@
 
 <script>
 import { isWeb } from "../helpers/isWeb";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 //Components
+import Picker from "./Picker";
 import GlobalControls from "./GlobalControls";
-import Colors from "./Colors";
+import Menu from "./Menu";
 import Export from "./Export";
 import Logo from "./Logo";
 import Reset from "./Reset";
 import Preview from "./Preview";
+import PreviewMock from "./preview-assets/PreviewMock";
 import ImportCurrent from "./ImportCurrent";
 import ImportFile from "./ImportFile";
 import ImportZip from "./ImportZip";
@@ -91,14 +95,14 @@ export default {
     return {
       dropdowns: {
         import: false,
-        export: false
-      }
+        export: false,
+      },
     };
   },
   name: "home",
   components: {
     GlobalControls,
-    Colors,
+    Menu,
     Export,
     Reset,
     Preview,
@@ -109,7 +113,9 @@ export default {
     ExportToZip,
     ImportZip,
     Slice,
-    Logo
+    Logo,
+    PreviewMock,
+    Picker,
   },
   methods: {
     isWeb,
@@ -124,17 +130,27 @@ export default {
     },
     getWindow() {
       return window.browserWindow.getFocusedWindow();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
+@import "../scss/global.scss";
+
 .container {
-  width: 95%;
-  padding: 2vw 0;
+  width: 100%;
   max-width: none;
-  margin-top: 100px;
+  margin-top: $container-mt;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $container-padding;
+  padding-bottom: 0;
+  overflow-y: scroll;
+  max-height: calc(100vh - #{$container-mt});
 }
 
 .menu-wrapper {
@@ -145,8 +161,8 @@ export default {
 }
 
 @media screen and (max-width: 1200px) {
-  .row {
-    flex-direction: column-reverse;
+  .row div {
+    margin-bottom: $container-padding;
   }
 }
 
@@ -208,7 +224,7 @@ export default {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  background: #4a4a4a;
+  background: $gray-5;
 
   .logo {
     display: flex;
@@ -217,7 +233,7 @@ export default {
     h4 {
       margin-bottom: 0;
       margin-left: 8px;
-      color: white;
+      color: $text-khs-white;
       padding: 10px 0;
     }
   }
@@ -238,13 +254,22 @@ export default {
   }
 }
 
+.separator {
+  background: #3a3a3a;
+  width: 2px;
+  margin-right: 20px;
+  margin-left: 0px;
+  transform: translateY(2px);
+}
+
 .topbar {
   display: flex;
   padding: 2px;
-  background: #222;
+  background: $gray-2;
   .draggable {
     display: block;
     flex-grow: 1;
+    color: white;
   }
   .window-controls {
     padding-right: 10px;
@@ -272,5 +297,9 @@ export default {
       }
     }
   }
+}
+
+.logo-drag {
+  height: 20px;
 }
 </style>

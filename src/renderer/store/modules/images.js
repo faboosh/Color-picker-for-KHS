@@ -10,8 +10,8 @@ let baseSettings = {
     w: 1920,
     h: 1920,
     aspect: {
-        w: 2,
-        h: 3
+        w: 3,
+        h: 2
     }
 };
 

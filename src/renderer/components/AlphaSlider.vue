@@ -1,7 +1,7 @@
 <template>
   <div class="control mb-3">
     <div class="color">
-      <h6 class="mt-1 text-white">Image Alpha</h6>
+      <h6 class="mt-1 text-khs-white">Image Alpha</h6>
       <div class="inner">
         <input
           type="range"
@@ -27,27 +27,28 @@ export default {
   props: ["selectedTarget", "alpha"],
   data() {
     return {
-      undo: fas.faUndo
+      undo: fas.faUndo,
     };
   },
   methods: {
     ...mapGetters(["getAlpha"]),
     ...mapActions(["setAlpha"]),
-    onSetAlpha: function(e) {
+    onSetAlpha: function (e) {
       this.setAlpha({
         target: this.$props.selectedTarget,
-        alpha: e.target.value / 100
+        alpha: e.target.value / 100,
       });
-    }
+    },
   },
   components: {
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../scss/global.scss";
 .control {
   width: calc(50% - 10px);
 }
@@ -56,7 +57,7 @@ input[type="range"] {
   width: 100%; /* Specific width is required for Firefox. */
   background: #333333; /* Otherwise white in Chrome */
   border: none;
-  border-radius: 5px;
+  border-radius: $border-radius;
 
   &:focus,
   &:active {
@@ -78,13 +79,13 @@ input[type="range"] {
 input[type="color"] {
   border: none;
   padding: 0;
-  border-radius: 5px;
+  border-radius: $border-radius;
   outline: none;
   position: relative;
 
   &:after {
     position: absolute;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: $border-radius 0px 0px 5px;
     background-color: inherit;
     content: "";
     top: 0;
