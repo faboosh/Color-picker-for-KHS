@@ -1,7 +1,7 @@
 <template>
   <div class="images-wrapper">
     <div class="images">
-      <div class="btn-group mb-3 mt-2" role="group">
+      <div class="btn-group" role="group">
         <button
           class="btn btn-secondary"
           :class="{ active: target == 'Phase_Plant' }"
@@ -160,6 +160,13 @@ export default {
 
 .hide {
   display: none;
+}
+
+.images-wrapper {
+  max-height: calc(
+    #{$sidebar-height} - #{$toggle-height} - #{$padding-unit} * 3
+  );
+  overflow-y: auto;
 }
 
 .image-wrapper {
