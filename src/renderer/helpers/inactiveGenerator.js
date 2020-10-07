@@ -1,10 +1,12 @@
 import { surfacecurve } from "../assets/surfacecurve-color";
+import { matMul } from "./math";
 
 function getRGB(color) {
     return {
         r: surfacecurve(color).red() / 255,
         g: surfacecurve(color).green() / 255,
-        b: surfacecurve(color).blue() / 255
+        b: surfacecurve(color).blue() / 255,
+        a: surfacecurve(color).alpha(),
     }
 }
 
@@ -17,76 +19,33 @@ function getRGB(color) {
 */
 
 export const getInactive = (base, tint, back) => {
-    const hex = {
-        base,
-        tint,
-        back
-    }
-
     base = getRGB(base)
     tint = getRGB(tint)
     back = getRGB(back)
 
-    /*
-    const computed = {
-        r:
-            base.r * inactive.r * 0.1063 +
-            base.g * inactive.g * 0.1063 +
-            base.b * inactive.b * 0.1063,
-        g:
-            base.r * inactive.r * 0.3576 +
-            base.g * inactive.g * 0.3576 +
-            base.b * inactive.b * 0.3576,
-        b:
-            base.r * inactive.r * 0.0361 +
-            base.g * inactive.g * 0.0361 +
-            base.b * inactive.b * 0.0361,
-        a:
-            1 * (mainBackground.r * 0.5) +
-            1 * (mainBackground.g * 0.5) +
-            1 * (mainBackground.b * 0.5)
-    }
-    */
+    const baseMatrix = [
+        [base.r],
+        [base.g],
+        [base.b],
+        [base.a],
+        [1]
+    ]
 
+    let scale = 2.12;
+    let floats = [
+        0.1063,
+        0.3576,
+        0.0361,
+    ].map(number => number * scale)
 
-    const computed = {
-        r:
-            base.r * tint.r +
-            base.g * tint.r +
-            base.b * tint.r,
-        g:
-            base.r * tint.g +
-            base.g * tint.g +
-            base.b * tint.g,
-        b:
-            base.r * tint.b +
-            base.g * tint.b +
-            base.b * tint.b,
-        a:
-            1 * (back.r * 0.5) +
-            1 * (back.g * 0.5) +
-            1 * (back.b * 0.5)
-    }
+    const inactiveMatrix = [
+        [floats[0] * tint.r, floats[1] * tint.r, floats[2] * tint.r, back.r * 0.5, 0],
+        [floats[0] * tint.g, floats[1] * tint.g, floats[2] * tint.g, back.g * 0.5, 0],
+        [floats[0] * tint.b, floats[1] * tint.b, floats[2] * tint.b, back.b * 0.5, 0],
+        [0, 0, 0, 1, 0],
+    ]
 
-    const rgb =
-        `rgb(
-            ${Math.floor(computed.r * 255)}, 
-            ${Math.floor(computed.g * 255)}, 
-            ${Math.floor(computed.b * 255)}
-        )`
+    let [r, g, b, a] = matMul(inactiveMatrix, baseMatrix);
 
-
-    /*const color =
-        surfacecurve(base)
-            .blend(inactive, 0.3)
-            .blend(mainBackground, 0.5)
-            .hex6();
-
-    console.log();
-
-    //console.log(base, inactive, mainBackground);
-    /*base = surfacecurve(base).saturation(0).hex6();
-    base = surfacecurve(base).blend(inactive, 0.5).blend(mainBackground, 0.6).hex6();*/
-    const color = surfacecurve(rgb).blend(hex.back, 0.7).hex6();
-    return color;
+    return `rgba(${r * 255}, ${g * 255}, ${b * 255}, ${a})`;
 }
