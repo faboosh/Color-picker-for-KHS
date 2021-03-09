@@ -3,21 +3,21 @@
     <div class="images">
       <div class="btn-group" role="group">
         <button
-          class="btn btn-secondary"
+          class="btn btn-khs inverted"
           :class="{ active: target == 'Phase_Plant' }"
           @click="setTarget('Phase_Plant')"
         >
           Phase Plant
         </button>
         <button
-          class="btn btn-secondary"
+          class="btn btn-khs inverted"
           :class="{ active: target == 'Multipass' }"
           @click="setTarget('Multipass')"
         >
           Multipass
         </button>
         <button
-          class="btn btn-secondary"
+          class="btn btn-khs inverted"
           :class="{ active: target == 'Snap_Heap' }"
           @click="setTarget('Snap_Heap')"
         >
@@ -167,6 +167,16 @@ export default {
     #{$sidebar-height} - #{$toggle-height} - #{$padding-unit} * 3
   );
   overflow-y: auto;
+
+  .btn-group {
+    padding-top: $padding-unit;
+    width: 100%;
+    background: $gray-5;
+
+    .btn-khs {
+    }
+    
+  }
 }
 
 .image-wrapper {

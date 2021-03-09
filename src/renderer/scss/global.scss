@@ -30,4 +30,40 @@ $padding-unit: 5px;
 
 .btn {
     border-radius: $border-radius !important;
+
+    &:focus,
+    &:active {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+}
+
+.btn-khs {
+    background: $gray-3;
+    color: $gray-6;
+    position: relative;
+
+    &:hover {
+        background: $gray-4;
+    }
+
+    &.active {
+        color: $text-khs-white;
+        background: $gray-4;
+    }
+
+    &.inverted {
+        background: $gray-4;
+        color: $gray-6;
+
+        &:hover {
+            background: $gray-6;
+            color: $gray-4;
+        }
+    
+        &.active {
+            color: $text-khs-white;
+            background: $gray-3;
+        }
+    }
 }

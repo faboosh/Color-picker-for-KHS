@@ -10310,7 +10310,10 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import { getInactive } from "../../helpers/inactiveGenerator";
 export default {
   methods: {
-    ...mapGetters(["getColorByLabel", "getComputedColor"]),
+    ...mapGetters(["getColorByLabel", "getComputedColor", "getRenderedImage"]),
+    getPluginImage: function (name) {
+      return this.getRenderedImage()(name);
+    },
     getColor: function (label) {
       return this.getComputedColor()(this.getColorByLabel()(label), true);
     },
