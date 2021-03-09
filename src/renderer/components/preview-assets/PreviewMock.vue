@@ -194,7 +194,7 @@
           y="837.026"
           width="14.538"
           height="23.881"
-          :style="{ fill: getColor('panel_background') }"
+          :style="{ fill: 'rgba(0, 0, 0, 0)',  backgroundImage: `url(${getPluginImage("Phase_Plant")})` }"
         />
       </g>
       <g
